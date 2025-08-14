@@ -1,0 +1,1059 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เกมผจญภัย: ข้อมูลและสารสนเทศ - Adventure Game: Data and Information</title>
+    
+    <!-- 
+    MIT License - Educational Adventure Game
+    Copyright (c) 2024 Educational Game Development
+    
+    Permission is hereby granted, free of charge, to any person obtaining a copy
+    of this software and associated documentation files (the "Software"), to deal
+    in the Software without restriction, including without limitation the rights
+    to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+    copies of the Software, and to permit persons to whom the Software is
+    furnished to do so, subject to the following conditions:
+    
+    The above copyright notice and this permission notice shall be included in all
+    copies or substantial portions of the Software.
+    -->
+    
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --secondary-color: #06b6d4;
+            --success-color: #10b981;
+            --error-color: #ef4444;
+            --warning-color: #f59e0b;
+            --background: #f8fafc;
+            --surface: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --border: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 100vh;
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .game-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen {
+            background: var(--surface);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: var(--shadow-lg);
+            width: 100%;
+            max-width: 800px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 40px;
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--background);
+            border-radius: 15px;
+            border-left: 5px solid var(--primary-color);
+        }
+
+        .content-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 15px;
+        }
+
+        .content-text {
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+
+        .example-box {
+            background: var(--surface);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border: 2px solid var(--border);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: var(--shadow);
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .btn-secondary {
+            background: var(--text-secondary);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+        }
+
+        .btn-error {
+            background: var(--error-color);
+        }
+
+        .question-container {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            font-weight: bold;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: var(--background);
+            border-radius: 15px;
+        }
+
+        .choices-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .choice-btn {
+            padding: 20px;
+            font-size: 1rem;
+            border-radius: 15px;
+            border: 2px solid var(--border);
+            background: var(--surface);
+            color: var(--text-primary);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .choice-btn:hover {
+            border-color: var(--primary-color);
+            background: var(--background);
+            transform: translateY(-2px);
+        }
+
+        .score-display {
+            text-align: center;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: var(--background);
+            border-radius: 10px;
+        }
+
+        .feedback {
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+
+        .feedback.correct {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .feedback.incorrect {
+            background: var(--error-color);
+            color: white;
+        }
+
+        .language-selector {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .lang-btn {
+            padding: 8px 15px;
+            border: 2px solid white;
+            background: transparent;
+            color: white;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .lang-btn.active {
+            background: white;
+            color: var(--primary-color);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: var(--border);
+            border-radius: 5px;
+            margin-bottom: 30px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            transition: width 0.5s ease;
+        }
+
+        .character {
+            font-size: 4rem;
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        @media (max-width: 768px) {
+            .screen {
+                padding: 20px;
+                margin: 10px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .choices-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        .adventure-scene {
+            text-align: center;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #fef3c7, #fde68a);
+            border-radius: 15px;
+            border: 2px solid var(--warning-color);
+        }
+
+        .scene-text {
+            font-size: 1.1rem;
+            font-style: italic;
+            color: #92400e;
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="language-selector">
+        <button class="lang-btn active" onclick="changeLanguage('th')">ไทย</button>
+        <button class="lang-btn" onclick="changeLanguage('en')">English</button>
+        <button class="lang-btn" onclick="changeLanguage('ja')">日本語</button>
+    </div>
+
+    <div class="game-container">
+        <!-- Intro Screen -->
+        <div id="introScreen" class="screen">
+            <h1 class="title" id="gameTitle">🎮 เกมผจญภัย: ข้อมูลและสารสนเทศ</h1>
+            <p class="subtitle" id="gameSubtitle">การเรียนรู้ที่สนุกสำหรับนักเรียนชั้น ม.1</p>
+            
+            <div class="character">🧙‍♂️</div>
+            
+            <div class="adventure-scene">
+                <p class="scene-text" id="introStory">
+                    ยินดีต้อนรับสู่โลกแห่งข้อมูลและสารสนเทศ! คุณคือนักผจญภัยที่ต้องเรียนรู้ความแตกต่างระหว่าง "ข้อมูล" และ "สารสนเทศ" เพื่อช่วยเหลือชาวบ้านในหมู่บ้านแห่งความรู้
+                </p>
+            </div>
+
+            <div class="content-section">
+                <h3 class="content-title" id="dataTitle">📊 ข้อมูล (Data) คืออะไร?</h3>
+                <p class="content-text" id="dataDefinition">
+                    ข้อมูล คือ ข้อเท็จจริงดิบๆ ที่ยังไม่ได้ผ่านการประมวลผล เช่น ตัวเลข ตัวอักษร สัญลักษณ์ หรือภาพต่างๆ ที่เก็บรวบรวมมา แต่ยังไม่มีความหมายที่ชัดเจน
+                </p>
+                <div class="example-box">
+                    <strong id="dataExample">ตัวอย่าง:</strong>
+                    <p id="dataExampleText">25, 30, 28, 32, 27 (ตัวเลขเหล่านี้เป็นเพียงข้อมูลดิบ)</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3 class="content-title" id="infoTitle">💡 สารสนเทศ (Information) คืออะไร?</h3>
+                <p class="content-text" id="infoDefinition">
+                    สารสนเทศ คือ ข้อมูลที่ผ่านการประมวลผล จัดระเบียบ และให้ความหมายแล้ว ทำให้เกิดประโยชน์และสามารถนำไปใช้ตัดสินใจได้
+                </p>
+                <div class="example-box">
+                    <strong id="infoExample">ตัวอย่าง:</strong>
+                    <p id="infoExampleText">"อุณหภูมิเฉลี่ยในสัปดาห์นี้คือ 28.4 องศาเซลเซียส" (ข้อมูลที่ได้รับการประมวลผลแล้ว)</p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3 class="content-title" id="differenceTitle">🔍 ความแตกต่างสำคัญ</h3>
+                <div class="example-box">
+                    <p id="differenceText">
+                        <strong>ข้อมูล:</strong> ข้อเท็จจริงดิบ ไม่มีความหมาย ไม่สามารถใช้ตัดสินใจได้<br>
+                        <strong>สารสนเทศ:</strong> ข้อมูลที่ประมวลผลแล้ว มีความหมาย สามารถใช้ตัดสินใจได้
+                    </p>
+                </div>
+            </div>
+
+            <button class="btn" onclick="startGame()" id="startBtn">🚀 เริ่มการผจญภัย!</button>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen hidden">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+            </div>
+            
+            <div class="score-display">
+                <span id="scoreText">คะแนน:</span> <span id="currentScore">0</span> / <span id="totalQuestions">8</span>
+            </div>
+
+            <div class="character" id="gameCharacter">🧙‍♂️</div>
+            
+            <div class="adventure-scene">
+                <p class="scene-text" id="currentScene"></p>
+            </div>
+
+            <div class="question-container">
+                <div class="question-text" id="questionText"></div>
+                <div class="choices-container" id="choicesContainer"></div>
+            </div>
+
+            <div id="feedback" class="feedback hidden"></div>
+        </div>
+
+        <!-- Final Screen -->
+        <div id="finalScreen" class="screen hidden">
+            <h1 class="title" id="finalTitle">🎉 การผจญภัยสำเร็จ!</h1>
+            
+            <div class="character">🏆</div>
+            
+            <div class="score-display">
+                <h2 id="finalScoreText">คะแนนรวม: <span id="finalScore">0</span> / <span id="finalTotal">8</span></h2>
+                <p id="scorePercentage"></p>
+            </div>
+
+            <div class="content-section">
+                <h3 class="content-title" id="performanceTitle">📈 ผลการเรียนรู้</h3>
+                <p class="content-text" id="performanceMessage"></p>
+                <div class="example-box">
+                    <p id="learningTips"></p>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h3 class="content-title" id="summaryTitle">📚 สรุปบทเรียน</h3>
+                <p class="content-text" id="lessonSummary">
+                    ข้อมูล (Data) คือข้อเท็จจริงดิบที่ยังไม่ได้ประมวลผล ส่วนสารสนเทศ (Information) คือข้อมูลที่ผ่านการประมวลผลและมีความหมายแล้ว การเข้าใจความแตกต่างนี้จะช่วยให้เราสามารถใช้ข้อมูลได้อย่างมีประสิทธิภาพ
+                </p>
+            </div>
+
+            <button class="btn" onclick="restartGame()" id="restartBtn">🔄 เล่นอีกครั้ง</button>
+        </div>
+    </div>
+
+    <script>
+        // Multi-language support
+        const translations = {
+            th: {
+                gameTitle: "🎮 เกมผจญภัย: ข้อมูลและสารสนเทศ",
+                gameSubtitle: "การเรียนรู้ที่สนุกสำหรับนักเรียนชั้น ม.1",
+                introStory: "ยินดีต้อนรับสู่โลกแห่งข้อมูลและสารสนเทศ! คุณคือนักผจญภัยที่ต้องเรียนรู้ความแตกต่างระหว่าง \"ข้อมูล\" และ \"สารสนเทศ\" เพื่อช่วยเหลือชาวบ้านในหมู่บ้านแห่งความรู้",
+                dataTitle: "📊 ข้อมูล (Data) คืออะไร?",
+                dataDefinition: "ข้อมูล คือ ข้อเท็จจริงดิบๆ ที่ยังไม่ได้ผ่านการประมวลผล เช่น ตัวเลข ตัวอักษร สัญลักษณ์ หรือภาพต่างๆ ที่เก็บรวบรวมมา แต่ยังไม่มีความหมายที่ชัดเจน",
+                dataExample: "ตัวอย่าง:",
+                dataExampleText: "25, 30, 28, 32, 27 (ตัวเลขเหล่านี้เป็นเพียงข้อมูลดิบ)",
+                infoTitle: "💡 สารสนเทศ (Information) คืออะไร?",
+                infoDefinition: "สารสนเทศ คือ ข้อมูลที่ผ่านการประมวลผล จัดระเบียบ และให้ความหมายแล้ว ทำให้เกิดประโยชน์และสามารถนำไปใช้ตัดสินใจได้",
+                infoExample: "ตัวอย่าง:",
+                infoExampleText: "\"อุณหภูมิเฉลี่ยในสัปดาห์นี้คือ 28.4 องศาเซลเซียส\" (ข้อมูลที่ได้รับการประมวลผลแล้ว)",
+                differenceTitle: "🔍 ความแตกต่างสำคัญ",
+                differenceText: "<strong>ข้อมูล:</strong> ข้อเท็จจริงดิบ ไม่มีความหมาย ไม่สามารถใช้ตัดสินใจได้<br><strong>สารสนเทศ:</strong> ข้อมูลที่ประมวลผลแล้ว มีความหมาย สามารถใช้ตัดสินใจได้",
+                startBtn: "🚀 เริ่มการผจญภัย!",
+                scoreText: "คะแนน:",
+                finalTitle: "🎉 การผจญภัยสำเร็จ!",
+                finalScoreText: "คะแนนรวม:",
+                performanceTitle: "📈 ผลการเรียนรู้",
+                summaryTitle: "📚 สรุปบทเรียน",
+                lessonSummary: "ข้อมูล (Data) คือข้อเท็จจริงดิบที่ยังไม่ได้ประมวลผล ส่วนสารสนเทศ (Information) คือข้อมูลที่ผ่านการประมวลผลและมีความหมายแล้ว การเข้าใจความแตกต่างนี้จะช่วยให้เราสามารถใช้ข้อมูลได้อย่างมีประสิทธิภาพ",
+                restartBtn: "🔄 เล่นอีกครั้ง",
+                correct: "ถูกต้อง! 🎉",
+                incorrect: "ลองใหม่ดู! 💪"
+            },
+            en: {
+                gameTitle: "🎮 Adventure Game: Data and Information",
+                gameSubtitle: "Fun Learning for Grade 7 Students",
+                introStory: "Welcome to the world of Data and Information! You are an adventurer who must learn the difference between \"Data\" and \"Information\" to help the villagers in the Village of Knowledge.",
+                dataTitle: "📊 What is Data?",
+                dataDefinition: "Data is raw facts that have not been processed, such as numbers, letters, symbols, or images that are collected but do not yet have clear meaning.",
+                dataExample: "Example:",
+                dataExampleText: "25, 30, 28, 32, 27 (These numbers are just raw data)",
+                infoTitle: "💡 What is Information?",
+                infoDefinition: "Information is data that has been processed, organized, and given meaning, making it useful and usable for decision-making.",
+                infoExample: "Example:",
+                infoExampleText: "\"The average temperature this week is 28.4 degrees Celsius\" (Processed data)",
+                differenceTitle: "🔍 Key Differences",
+                differenceText: "<strong>Data:</strong> Raw facts, no meaning, cannot be used for decisions<br><strong>Information:</strong> Processed data, meaningful, can be used for decisions",
+                startBtn: "🚀 Start Adventure!",
+                scoreText: "Score:",
+                finalTitle: "🎉 Adventure Complete!",
+                finalScoreText: "Total Score:",
+                performanceTitle: "📈 Learning Results",
+                summaryTitle: "📚 Lesson Summary",
+                lessonSummary: "Data is raw facts that haven't been processed, while Information is data that has been processed and given meaning. Understanding this difference helps us use data effectively.",
+                restartBtn: "🔄 Play Again",
+                correct: "Correct! 🎉",
+                incorrect: "Try again! 💪"
+            },
+            ja: {
+                gameTitle: "🎮 アドベンチャーゲーム：データと情報",
+                gameSubtitle: "中学1年生のための楽しい学習",
+                introStory: "データと情報の世界へようこそ！あなたは「データ」と「情報」の違いを学び、知識の村の村人たちを助ける冒険者です。",
+                dataTitle: "📊 データとは何ですか？",
+                dataDefinition: "データとは、まだ処理されていない生の事実で、数字、文字、記号、画像などが収集されているが、まだ明確な意味を持たないものです。",
+                dataExample: "例：",
+                dataExampleText: "25, 30, 28, 32, 27 (これらの数字は単なる生データです)",
+                infoTitle: "💡 情報とは何ですか？",
+                infoDefinition: "情報とは、処理され、整理され、意味を与えられたデータで、有用で意思決定に使用できるものです。",
+                infoExample: "例：",
+                infoExampleText: "「今週の平均気温は28.4度です」（処理されたデータ）",
+                differenceTitle: "🔍 重要な違い",
+                differenceText: "<strong>データ:</strong> 生の事実、意味なし、決定に使用不可<br><strong>情報:</strong> 処理されたデータ、意味あり、決定に使用可能",
+                startBtn: "🚀 冒険開始！",
+                scoreText: "スコア:",
+                finalTitle: "🎉 冒険完了！",
+                finalScoreText: "総スコア:",
+                performanceTitle: "📈 学習結果",
+                summaryTitle: "📚 レッスンまとめ",
+                lessonSummary: "データは処理されていない生の事実であり、情報は処理されて意味を与えられたデータです。この違いを理解することで、データを効果的に使用できます。",
+                restartBtn: "🔄 もう一度プレイ",
+                correct: "正解！ 🎉",
+                incorrect: "もう一度！ 💪"
+            }
+        };
+
+        // Game state
+        let currentLanguage = 'th';
+        let currentQuestion = 0;
+        let score = 0;
+        let gameQuestions = [];
+
+        // Questions database with adventure scenarios
+        const questionsData = {
+            th: [
+                {
+                    scene: "🏰 คุณมาถึงปราสาทแห่งข้อมูล พบกับนักปราชญ์ที่ถามคุณ...",
+                    question: "ข้อใดต่อไปนี้เป็น 'ข้อมูล' (Data)?",
+                    choices: [
+                        "รายงานสรุปยอดขายประจำเดือน",
+                        "ตัวเลข: 100, 250, 180, 320",
+                        "กราฟแสดงแนวโน้มการเติบโต",
+                        "คำแนะนำการลงทุน"
+                    ],
+                    correct: 1,
+                    explanation: "ตัวเลขดิบๆ เป็นข้อมูล เพราะยังไม่ได้ประมวลผลให้มีความหมาย"
+                },
+                {
+                    scene: "🌊 ที่ทะเลสาบแห่งสารสนเทศ เจ้าปลาใหญ่ท้าทายคุณ...",
+                    question: "ข้อใดเป็น 'สารสนเทศ' (Information)?",
+                    choices: [
+                        "A, B, C, D, F",
+                        "85, 92, 78, 96, 88",
+                        "นักเรียนได้เกรดเฉลี่ย 3.2",
+                        "📊📈📉"
+                    ],
+                    correct: 2,
+                    explanation: "เกรดเฉลี่ย 3.2 เป็นสารสนเทศ เพราะเป็นข้อมูลที่ประมวลผลแล้ว"
+                },
+                {
+                    scene: "🏔️ บนยอดเขาแห่งความรู้ นกอินทรีถามคุณ...",
+                    question: "การเปลี่ยนข้อมูลให้เป็นสารสนเทศต้องผ่านขั้นตอนใด?",
+                    choices: [
+                        "การเก็บรวบรวม",
+                        "การประมวลผลและให้ความหมาย",
+                        "การลบทิ้ง",
+                        "การคัดลอก"
+                    ],
+                    correct: 1,
+                    explanation: "การประมวลผลและให้ความหมายจะเปลี่ยนข้อมูลให้เป็นสารสนเทศ"
+                },
+                {
+                    scene: "🌳 ในป่าแห่งตัวเลข ต้นไผ่ยักษ์ซุบซิบถาม...",
+                    question: "ข้อใดเป็นตัวอย่างของข้อมูล?",
+                    choices: [
+                        "สรุปผลการสอบ",
+                        "อุณหภูมิ: 25°C, 28°C, 30°C",
+                        "คำแนะนำสุขภาพ",
+                        "แผนการตลาด"
+                    ],
+                    correct: 1,
+                    explanation: "ตัวเลขอุณหภูมิดิบๆ เป็นข้อมูล ยังไม่ได้ประมวลผล"
+                },
+                {
+                    scene: "🏛️ ที่ห้องสมุดแห่งปัญญา บรรณารักษ์ถามคุณ...",
+                    question: "ข้อใดเป็นสารสนเทศ?",
+                    choices: [
+                        "1, 2, 3, 4, 5",
+                        "A, B, C, D, E",
+                        "จำนวนนักเรียนเพิ่มขึ้น 15%",
+                        "📚📖📝"
+                    ],
+                    correct: 2,
+                    explanation: "การเพิ่มขึ้น 15% เป็นสารสนเทศ เพราะมีการประมวลผลและมีความหมาย"
+                },
+                {
+                    scene: "⚡ ในถ้ำแห่งความลับ พ่อมดถามคุณ...",
+                    question: "ข้อมูลมีลักษณะอย่างไร?",
+                    choices: [
+                        "มีความหมายชัดเจน",
+                        "สามารถใช้ตัดสินใจได้ทันที",
+                        "เป็นข้อเท็จจริงดิบที่ยังไม่ได้ประมวลผล",
+                        "ผ่านการวิเคราะห์แล้ว"
+                    ],
+                    correct: 2,
+                    explanation: "ข้อมูลเป็นข้อเท็จจริงดิบที่ยังไม่ได้ประมวลผล ไม่มีความหมายชัดเจน"
+                },
+                {
+                    scene: "🌟 ที่จุดสูงสุดของการผจญภัย เทพีแห่งความรู้ถามคุณ...",
+                    question: "สารสนเทศมีประโยชน์อย่างไร?",
+                    choices: [
+                        "เก็บไว้ในคลังข้อมูล",
+                        "ใช้ในการตัดสินใจและแก้ปัญหา",
+                        "แสดงเป็นตัวเลขเท่านั้น",
+                        "ไม่มีประโยชน์"
+                    ],
+                    correct: 1,
+                    explanation: "สารสนเทศมีประโยชน์ในการตัดสินใจและแก้ปัญหา เพราะมีความหมายชัดเจน"
+                },
+                {
+                    scene: "🏆 การทดสอบสุดท้าย! ราชาแห่งความรู้ถามคุณ...",
+                    question: "ตัวอย่างใดแสดงการเปลี่ยนข้อมูลเป็นสารสนเทศ?",
+                    choices: [
+                        "เก็บตัวเลขไว้ในไฟล์",
+                        "คำนวณค่าเฉลี่ยจากตัวเลขหลายตัว",
+                        "พิมพ์ตัวเลขออกมา",
+                        "ลบตัวเลขทิ้ง"
+                    ],
+                    correct: 1,
+                    explanation: "การคำนวณค่าเฉลี่ยเป็นการประมวลผลข้อมูลให้เป็นสารสนเทศ"
+                }
+            ],
+            en: [
+                {
+                    scene: "🏰 You arrive at the Data Castle and meet a wise sage who asks...",
+                    question: "Which of the following is 'Data'?",
+                    choices: [
+                        "Monthly sales summary report",
+                        "Numbers: 100, 250, 180, 320",
+                        "Growth trend chart",
+                        "Investment advice"
+                    ],
+                    correct: 1,
+                    explanation: "Raw numbers are data because they haven't been processed to have meaning"
+                },
+                {
+                    scene: "🌊 At the Information Lake, the great fish challenges you...",
+                    question: "Which is 'Information'?",
+                    choices: [
+                        "A, B, C, D, F",
+                        "85, 92, 78, 96, 88",
+                        "Student average grade is 3.2",
+                        "📊📈📉"
+                    ],
+                    correct: 2,
+                    explanation: "Average grade 3.2 is information because it's processed data"
+                },
+                {
+                    scene: "🏔️ On Knowledge Mountain, an eagle asks you...",
+                    question: "What process turns data into information?",
+                    choices: [
+                        "Collection",
+                        "Processing and giving meaning",
+                        "Deletion",
+                        "Copying"
+                    ],
+                    correct: 1,
+                    explanation: "Processing and giving meaning transforms data into information"
+                },
+                {
+                    scene: "🌳 In the Number Forest, a giant bamboo whispers...",
+                    question: "Which is an example of data?",
+                    choices: [
+                        "Exam results summary",
+                        "Temperature: 25°C, 28°C, 30°C",
+                        "Health recommendations",
+                        "Marketing plan"
+                    ],
+                    correct: 1,
+                    explanation: "Raw temperature numbers are data, not yet processed"
+                },
+                {
+                    scene: "🏛️ In the Library of Wisdom, the librarian asks...",
+                    question: "Which is information?",
+                    choices: [
+                        "1, 2, 3, 4, 5",
+                        "A, B, C, D, E",
+                        "Student count increased by 15%",
+                        "📚📖📝"
+                    ],
+                    correct: 2,
+                    explanation: "15% increase is information because it's processed and meaningful"
+                },
+                {
+                    scene: "⚡ In the Secret Cave, a wizard asks you...",
+                    question: "What are the characteristics of data?",
+                    choices: [
+                        "Has clear meaning",
+                        "Can be used for immediate decisions",
+                        "Raw facts not yet processed",
+                        "Already analyzed"
+                    ],
+                    correct: 2,
+                    explanation: "Data consists of raw facts that haven't been processed yet"
+                },
+                {
+                    scene: "🌟 At the peak of adventure, the Knowledge Goddess asks...",
+                    question: "How is information useful?",
+                    choices: [
+                        "Store in database",
+                        "Use for decision-making and problem-solving",
+                        "Display as numbers only",
+                        "Not useful"
+                    ],
+                    correct: 1,
+                    explanation: "Information is useful for decision-making and problem-solving"
+                },
+                {
+                    scene: "🏆 Final test! The Knowledge King asks you...",
+                    question: "Which example shows converting data to information?",
+                    choices: [
+                        "Store numbers in a file",
+                        "Calculate average from multiple numbers",
+                        "Print numbers out",
+                        "Delete numbers"
+                    ],
+                    correct: 1,
+                    explanation: "Calculating average is processing data into information"
+                }
+            ],
+            ja: [
+                {
+                    scene: "🏰 データ城に到着し、賢者があなたに尋ねます...",
+                    question: "次のうち「データ」はどれですか？",
+                    choices: [
+                        "月次売上サマリーレポート",
+                        "数字: 100, 250, 180, 320",
+                        "成長トレンドチャート",
+                        "投資アドバイス"
+                    ],
+                    correct: 1,
+                    explanation: "生の数字はデータです。まだ意味を持つように処理されていません"
+                },
+                {
+                    scene: "🌊 情報の湖で、大きな魚があなたに挑戦します...",
+                    question: "「情報」はどれですか？",
+                    choices: [
+                        "A, B, C, D, F",
+                        "85, 92, 78, 96, 88",
+                        "学生の平均成績は3.2です",
+                        "📊📈📉"
+                    ],
+                    correct: 2,
+                    explanation: "平均成績3.2は情報です。処理されたデータだからです"
+                },
+                {
+                    scene: "🏔️ 知識の山で、鷲があなたに尋ねます...",
+                    question: "データを情報に変えるプロセスは？",
+                    choices: [
+                        "収集",
+                        "処理と意味付け",
+                        "削除",
+                        "コピー"
+                    ],
+                    correct: 1,
+                    explanation: "処理と意味付けがデータを情報に変換します"
+                },
+                {
+                    scene: "🌳 数字の森で、巨大な竹がささやきます...",
+                    question: "データの例はどれですか？",
+                    choices: [
+                        "試験結果サマリー",
+                        "温度: 25°C, 28°C, 30°C",
+                        "健康アドバイス",
+                        "マーケティング計画"
+                    ],
+                    correct: 1,
+                    explanation: "生の温度数値はデータです。まだ処理されていません"
+                },
+                {
+                    scene: "🏛️ 知恵の図書館で、司書が尋ねます...",
+                    question: "情報はどれですか？",
+                    choices: [
+                        "1, 2, 3, 4, 5",
+                        "A, B, C, D, E",
+                        "学生数が15%増加",
+                        "📚📖📝"
+                    ],
+                    correct: 2,
+                    explanation: "15%の増加は情報です。処理されて意味があるからです"
+                },
+                {
+                    scene: "⚡ 秘密の洞窟で、魔法使いがあなたに尋ねます...",
+                    question: "データの特徴は？",
+                    choices: [
+                        "明確な意味がある",
+                        "すぐに決定に使える",
+                        "まだ処理されていない生の事実",
+                        "すでに分析済み"
+                    ],
+                    correct: 2,
+                    explanation: "データはまだ処理されていない生の事実です"
+                },
+                {
+                    scene: "🌟 冒険の頂点で、知識の女神が尋ねます...",
+                    question: "情報はどのように有用ですか？",
+                    choices: [
+                        "データベースに保存",
+                        "意思決定と問題解決に使用",
+                        "数字としてのみ表示",
+                        "有用ではない"
+                    ],
+                    correct: 1,
+                    explanation: "情報は意思決定と問題解決に有用です"
+                },
+                {
+                    scene: "🏆 最終テスト！知識の王があなたに尋ねます...",
+                    question: "データを情報に変換する例は？",
+                    choices: [
+                        "ファイルに数字を保存",
+                        "複数の数字から平均を計算",
+                        "数字を印刷",
+                        "数字を削除"
+                    ],
+                    correct: 1,
+                    explanation: "平均の計算はデータを情報に処理することです"
+                }
+            ]
+        };
+
+        // Audio functions using Web Audio API
+        function playTone(isCorrect) {
+            try {
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+                
+                if (isCorrect) {
+                    // Happy tone sequence for correct answer
+                    oscillator.frequency.setValueAtTime(523.25, audioContext.currentTime); // C5
+                    oscillator.frequency.setValueAtTime(659.25, audioContext.currentTime + 0.1); // E5
+                    oscillator.frequency.setValueAtTime(783.99, audioContext.currentTime + 0.2); // G5
+                } else {
+                    // Lower tone for incorrect answer
+                    oscillator.frequency.setValueAtTime(220, audioContext.currentTime); // A3
+                    oscillator.frequency.setValueAtTime(196, audioContext.currentTime + 0.1); // G3
+                }
+                
+                oscillator.type = 'sine';
+                gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+                
+                oscillator.start(audioContext.currentTime);
+                oscillator.stop(audioContext.currentTime + 0.3);
+            } catch (error) {
+                console.log('Audio not supported or blocked:', error);
+            }
+        }
+
+        // Language switching
+        function changeLanguage(lang) {
+            currentLanguage = lang;
+            
+            // Update language buttons
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            // Update all text elements
+            updateLanguage();
+        }
+
+        function updateLanguage() {
+            const t = translations[currentLanguage];
+            
+            // Update intro screen
+            document.getElementById('gameTitle').textContent = t.gameTitle;
+            document.getElementById('gameSubtitle').textContent = t.gameSubtitle;
+            document.getElementById('introStory').textContent = t.introStory;
+            document.getElementById('dataTitle').textContent = t.dataTitle;
+            document.getElementById('dataDefinition').textContent = t.dataDefinition;
+            document.getElementById('dataExample').textContent = t.dataExample;
+            document.getElementById('dataExampleText').textContent = t.dataExampleText;
+            document.getElementById('infoTitle').textContent = t.infoTitle;
+            document.getElementById('infoDefinition').textContent = t.infoDefinition;
+            document.getElementById('infoExample').textContent = t.infoExample;
+            document.getElementById('infoExampleText').textContent = t.infoExampleText;
+            document.getElementById('differenceTitle').textContent = t.differenceTitle;
+            document.getElementById('differenceText').innerHTML = t.differenceText;
+            document.getElementById('startBtn').textContent = t.startBtn;
+            
+            // Update game screen
+            document.getElementById('scoreText').textContent = t.scoreText;
+            
+            // Update final screen
+            document.getElementById('finalTitle').textContent = t.finalTitle;
+            document.getElementById('performanceTitle').textContent = t.performanceTitle;
+            document.getElementById('summaryTitle').textContent = t.summaryTitle;
+            document.getElementById('lessonSummary').textContent = t.lessonSummary;
+            document.getElementById('restartBtn').textContent = t.restartBtn;
+        }
+
+        // Game functions
+        function startGame() {
+            gameQuestions = [...questionsData[currentLanguage]];
+            currentQuestion = 0;
+            score = 0;
+            
+            document.getElementById('introScreen').classList.add('hidden');
+            document.getElementById('gameScreen').classList.remove('hidden');
+            document.getElementById('finalScreen').classList.add('hidden');
+            
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const question = gameQuestions[currentQuestion];
+            const progress = ((currentQuestion + 1) / gameQuestions.length) * 100;
+            
+            // Update progress bar
+            document.getElementById('progressFill').style.width = progress + '%';
+            
+            // Update score display
+            document.getElementById('currentScore').textContent = score;
+            document.getElementById('totalQuestions').textContent = gameQuestions.length;
+            
+            // Update scene and question
+            document.getElementById('currentScene').textContent = question.scene;
+            document.getElementById('questionText').textContent = question.question;
+            
+            // Create choice buttons
+            const choicesContainer = document.getElementById('choicesContainer');
+            choicesContainer.innerHTML = '';
+            
+            question.choices.forEach((choice, index) => {
+                const button = document.createElement('button');
+                button.className = 'choice-btn';
+                button.textContent = choice;
+                button.onclick = () => checkAnswer(index);
+                choicesContainer.appendChild(button);
+            });
+            
+            // Hide feedback
+            document.getElementById('feedback').classList.add('hidden');
+        }
+
+        function checkAnswer(choiceIndex) {
+            const question = gameQuestions[currentQuestion];
+            const isCorrect = choiceIndex === question.correct;
+            const feedback = document.getElementById('feedback');
+            
+            // Play sound
+            playTone(isCorrect);
+            
+            // Update score
+            if (isCorrect) {
+                score++;
+                feedback.textContent = translations[currentLanguage].correct + ' ' + question.explanation;
+                feedback.className = 'feedback correct';
+            } else {
+                feedback.textContent = translations[currentLanguage].incorrect + ' ' + question.explanation;
+                feedback.className = 'feedback incorrect';
+            }
+            
+            // Show feedback
+            feedback.classList.remove('hidden');
+            
+            // Disable choice buttons
+            document.querySelectorAll('.choice-btn').forEach(btn => {
+                btn.disabled = true;
+                btn.style.opacity = '0.6';
+            });
+            
+            // Move to next question after delay
+            setTimeout(() => {
+                currentQuestion++;
+                if (currentQuestion < gameQuestions.length) {
+                    showQuestion();
+                } else {
+                    showFinalScreen();
+                }
+            }, 3000);
+        }
+
+        function showFinalScreen() {
+            document.getElementById('gameScreen').classList.add('hidden');
+            document.getElementById('finalScreen').classList.remove('hidden');
+            
+            const percentage = Math.round((score / gameQuestions.length) * 100);
+            
+            document.getElementById('finalScore').textContent = score;
+            document.getElementById('finalTotal').textContent = gameQuestions.length;
+            document.getElementById('scorePercentage').textContent = percentage + '%';
+            
+            // Performance message based on score
+            let performanceMessage, learningTips;
+            
+            if (currentLanguage === 'th') {
+                if (percentage >= 90) {
+                    performanceMessage = "ยอดเยี่ยม! คุณเข้าใจความแตกต่างระหว่างข้อมูลและสารสนเทศเป็นอย่างดี";
+                    learningTips = "คุณพร้อมที่จะเรียนรู้เรื่องการจัดการข้อมูลขั้นสูงแล้ว!";
+                } else if (percentage >= 70) {
+                    performanceMessage = "ดีมาก! คุณมีความเข้าใจพื้นฐานที่ดี";
+                    learningTips = "ลองทบทวนตัวอย่างเพิ่มเติมเพื่อความเข้าใจที่ลึกซึ้งยิ่งขึ้น";
+                } else if (percentage >= 50) {
+                    performanceMessage = "ดี! คุณเริ่มเข้าใจแล้ว";
+                    learningTips = "ลองเล่นอีกครั้งและอ่านคำอธิบายให้ละเอียดมากขึ้น";
+                } else {
+                    performanceMessage = "ไม่เป็นไร! การเรียนรู้ต้องใช้เวลา";
+                    learningTips = "ลองอ่านบทเรียนอีกครั้งและเล่นเกมใหม่ คุณจะทำได้ดีขึ้นแน่นอน!";
+                }
+            } else if (currentLanguage === 'en') {
+                if (percentage >= 90) {
+                    performanceMessage = "Excellent! You understand the difference between data and information very well";
+                    learningTips = "You're ready to learn advanced data management concepts!";
+                } else if (percentage >= 70) {
+                    performanceMessage = "Very good! You have a solid basic understanding";
+                    learningTips = "Try reviewing more examples for deeper understanding";
+                } else if (percentage >= 50) {
+                    performanceMessage = "Good! You're starting to understand";
+                    learningTips = "Try playing again and read the explanations more carefully";
+                } else {
+                    performanceMessage = "That's okay! Learning takes time";
+                    learningTips = "Try reading the lesson again and play the game once more. You'll do better!";
+                }
+            } else { // Japanese
+                if (percentage >= 90) {
+                    performanceMessage = "素晴らしい！データと情報の違いをよく理解しています";
+                    learningTips = "高度なデータ管理の概念を学ぶ準備ができています！";
+                } else if (percentage >= 70) {
+                    performanceMessage = "とても良い！基本的な理解ができています";
+                    learningTips = "より深い理解のために、さらに例を復習してみてください";
+                } else if (percentage >= 50) {
+                    performanceMessage = "良い！理解し始めています";
+                    learningTips = "もう一度プレイして、説明をより注意深く読んでみてください";
+                } else {
+                    performanceMessage = "大丈夫！学習には時間がかかります";
+                    learningTips = "レッスンをもう一度読んで、ゲームをもう一度プレイしてみてください。きっと良くなります！";
+                }
+            }
+            
+            document.getElementById('performanceMessage').textContent = performanceMessage;
+            document.getElementById('learningTips').textContent = learningTips;
+        }
+
+        function restartGame() {
+            document.getElementById('finalScreen').classList.add('hidden');
+            document.getElementById('introScreen').classList.remove('hidden');
+        }
+
+        // Initialize the game
+        window.onload = function() {
+            updateLanguage();
+        };
+    </script>
+
+    <!-- 
+    DEPLOYMENT AND MODIFICATION INSTRUCTIONS:
+    
+    1. DEPLOYMENT:
+       - Save this file as "index.html"
+       - Open directly in any modern web browser
+       - No server required - works offline
+       - Compatible with Chrome, Firefox, Safari, Edge
+    
+    2. CONTENT MODIFICATION:
+       - Edit the questionsData object to add/modify questions
+       - Each question needs: scene, question, choices array, correct index, explanation
+       - Add new languages by extending the translations and questionsData objects
+    
+    3. STYLING CUSTOMIZATION:
+       - Modify CSS variables in :root for color scheme changes
+       - Adjust font sizes, spacing in the CSS section
+       - Change animations by modifying @keyframes rules
+    
+    4. RESEARCH USAGE:
+       - Track student performance by adding console.log statements
+       - Modify scoring system by changing the score calculation
+       - Add analytics by extending the checkAnswer function
+       - Export results by adding localStorage functionality
+    
+    5. EXTENDING FUNCTIONALITY:
+       - Add more question types by modifying the showQuestion function
+       - Include images by adding <img> tags in question content
+       - Add timer functionality with setInterval
+       - Create difficulty levels by categorizing questions
+    
+    LICENSE: MIT License - Free for educational and commercial use
+    -->
+</body>
+</html>
